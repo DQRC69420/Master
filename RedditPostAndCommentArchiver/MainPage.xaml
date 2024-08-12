@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="RedditPostAndCommentArchiver.MainPage">
+
+    <ScrollView
+     >
+        <VerticalStackLayout
+         Padding="30,0"
+         Spacing="25"
+        >
+
+            <Label
+             Text="Welcome!"
+             Style="{StaticResource Headline}"/>
+
+            <Label
+             Text="Please insert the subreddit name you wish to download"
+             Style="{StaticResource SubHeadline}"
+             />
+
+            <Editor
+             BackgroundColor="White"
+             HorizontalOptions="Fill"
+             VerticalOptions="FillAndExpand"
+             AutoSize="TextChanges"
+             IsSpellCheckEnabled="False"
+             TextColor="Black"     
+             Text="{Binding PostAsJson}"
+             
+             />
+
+            <Button
+             Text="Submit" 
+             HorizontalOptions="Fill"
+             Margin="0,0,0,25"
+             Command="{Binding SubmitJson}">
+                <Button.Shadow>
+                    <Shadow
+                     Brush="Gray"
+                     Opacity="05"
+                     Radius="20"
+                     />
+                </Button.Shadow>
+            </Button>
+
+            <Label
+             Text="If you already have a save file, select it, otherwise select a folder to put the savefile to."
+             Style="{StaticResource SubHeadline}"
+             FontSize="Small"
+             />
+            <Button
+             Text="Choose File"
+             HorizontalOptions="Center"
+             Clicked="Button_Clicked"
+             />
+
+            <Button
+             Text="Choose Folder"
+             HorizontalOptions="Center"
+             Clicked="Button_Clicked_1"
+             />
+
+            <Label
+             Text="{Binding SelectedPath, Mode=OneWayToSource}"
+             Style="{StaticResource SubHeadline}"
+             FontSize="Small"
+             x:Name="LabelFullPath"
+             />
+        </VerticalStackLayout>
+    </ScrollView>
+
+
+</ContentPage>
