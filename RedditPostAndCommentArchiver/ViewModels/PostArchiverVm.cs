@@ -43,10 +43,23 @@ namespace RedditPostAndCommentArchiver.ViewModels
         {
             get
             {
-                var command = new Command(() =>
+                //var command = new Command(() =>
+                //{
+                //    RedditServices.RedditServices.ConvertToPost(PostAsJson, SelectedPath);
+                //    PostAsJson = string.Empty;
+                //});
+
+                var command = new Command(async () =>
                 {
-                    RedditServices.RedditServices.ConvertToPost(PostAsJson, SelectedPath);
-                    PostAsJson = string.Empty;
+                    using HttpClient client = new HttpClient();
+                    client.DefaultRequestHeaders.Add("User-Agent", "MyRequest/1.0");
+                    using var result = await client.GetAsync($"{PostAsJson}.json");
+                    if (result.IsSuccessStatusCode)
+                    {
+                        using HttpContent content = result.Content;
+                        var siteAsString = await content.ReadAsStringAsync();
+                        RedditServices.RedditServices.ConvertToPost(siteAsString, _selectedPath);
+                    }
                 });
 
                 return command;
