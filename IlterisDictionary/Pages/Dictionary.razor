@@ -1,0 +1,112 @@
+﻿@page "/counter"
+
+@using IlterisDictionaryLibrary.Data
+
+<PageTitle>Search Dictionary</PageTitle>
+
+<h1>Dictionary</h1>
+<div>
+    <input type="text" @bind="@_currentString" />
+    <button @onclick=LoadDictionaryEntries>Search</button>
+</div>
+
+<hr/>
+
+<table border="1" class="table-bordered" width="100%">
+    <thead>
+        <tr>
+            <th width="14%">Proto-Turkic root</th>
+            <th width="14%">Turkish variant</th>
+            <th width="14%">Loanword</th>
+            <th width="14%">Meaning</th>
+            <th width="14%">further reading</th>
+            <th width="14%">other variants</th>
+            <th width="14%">related to</th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+        @foreach (var @row in @_dictionaryEntries)
+        {
+            <tr>
+                <td>@row.ProtoTurkicRoot</td>
+                <td>@row.TurkishVariant</td>
+                <td>@row.Loanword</td>
+                <td>
+                    <div>
+                        <button @onclick="() => ToggleVisibility(row)">
+                            @if (row.MeaningVisible)
+                            {
+                                <content>
+                                    Hide
+                                </content>
+                            }
+                            @if (!row.MeaningVisible)
+                            {
+                                <content>
+                                    Show
+                                </content>
+                            }
+
+                        </button>
+                        @if (row.MeaningVisible)
+                        {
+                            <p >
+                                @row.Meaning
+                            </p>
+                        }
+                    </div>
+                </td>
+                <td>@row.FurtherReading</td>
+                <td>@row.OtherVariants</td>
+                <td>@row.RelatedTo</td>
+            </tr>
+        }
+
+    </tbody>
+</table>
+
+<style>
+    .collapsable-content {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.5s ease-in-out;
+    }
+
+        .collapsable-content.show {
+            max-height: auto;
+        }
+</style>
+
+@code
+{
+
+
+    private string _currentString = string.Empty;
+    private List<IlterisDictionaryEntry> _dictionaryEntries = new List<IlterisDictionaryEntry>();
+
+    private void LoadDictionaryEntries()
+    {
+        _dictionaryEntries.Clear();
+        for (int i = 0; i < 5; i++)
+        {
+            _dictionaryEntries.Add(new IlterisDictionaryEntry()
+                {
+                    ProtoTurkicRoot = $"{i}",
+                    FurtherReading = $"{i}",
+                    Loanword = $"{i}",
+                    Meaning = $"{i}",
+                    OtherVariants = $"{i}",
+                    RelatedTo = $"{i}",
+                    TurkishVariant = $"{i}",
+                });
+        }
+
+    }
+
+    private void ToggleVisibility(IlterisDictionaryEntry entry)
+    {
+        entry.MeaningVisible = !entry.MeaningVisible;
+    }
+}
