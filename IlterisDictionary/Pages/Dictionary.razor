@@ -1,6 +1,6 @@
-﻿@page "/counter"
+﻿@page "/dictionary"
+@using IlterisDictionary.ViewModels
 
-@using IlterisDictionaryLibrary.Data
 
 <PageTitle>Search Dictionary</PageTitle>
 
@@ -10,7 +10,7 @@
     <button @onclick=LoadDictionaryEntries>Search</button>
 </div>
 
-<hr/>
+<hr />
 
 <table border="1" class="table-bordered" width="100%">
     <thead>
@@ -32,33 +32,13 @@
             <tr>
                 <td>@row.ProtoTurkicRoot</td>
                 <td>@row.TurkishVariant</td>
-                <td>@row.Loanword</td>
+                <td>@row.Loanwords</td>
                 <td>
                     <div>
-                        <button @onclick="() => ToggleVisibility(row)">
-                            @if (row.MeaningVisible)
-                            {
-                                <content>
-                                    Hide
-                                </content>
-                            }
-                            @if (!row.MeaningVisible)
-                            {
-                                <content>
-                                    Show
-                                </content>
-                            }
-
-                        </button>
-                        @if (row.MeaningVisible)
-                        {
-                            <p >
-                                @row.Meaning
-                            </p>
-                        }
+                        <a href="@GetMeaningLink(@row)">Show</a>
                     </div>
                 </td>
-                <td>@row.FurtherReading</td>
+                <td>@row.FurtherReadings</td>
                 <td>@row.OtherVariants</td>
                 <td>@row.RelatedTo</td>
             </tr>
@@ -67,46 +47,37 @@
     </tbody>
 </table>
 
-<style>
-    .collapsable-content {
-        max-height: 0;
-        overflow: hidden;
-        transition: max-height 0.5s ease-in-out;
-    }
-
-        .collapsable-content.show {
-            max-height: auto;
-        }
-</style>
 
 @code
 {
-
-
     private string _currentString = string.Empty;
-    private List<IlterisDictionaryEntry> _dictionaryEntries = new List<IlterisDictionaryEntry>();
+
+    const string _meaningPageName = "meanings";
+
+    private List<IlterisDictionaryEntryVm> _dictionaryEntries = new List<IlterisDictionaryEntryVm>();
 
     private void LoadDictionaryEntries()
     {
         _dictionaryEntries.Clear();
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < 100; i++)
         {
-            _dictionaryEntries.Add(new IlterisDictionaryEntry()
-                {
-                    ProtoTurkicRoot = $"{i}",
-                    FurtherReading = $"{i}",
-                    Loanword = $"{i}",
-                    Meaning = $"{i}",
-                    OtherVariants = $"{i}",
-                    RelatedTo = $"{i}",
-                    TurkishVariant = $"{i}",
-                });
+            var array = new[] { $"{i}" };
+            var item = new IlterisDictionaryEntryVm(
+    protoTurkicRoot: array,
+    turkishVariant: array,
+    furtherReading: array,
+    loanwords: array,
+    meaning: $"{i}",
+    otherVariants: array,
+    furtherReadings: array,
+    relatedTo: array);
+            _dictionaryEntries.Add(item);
         }
-
     }
 
-    private void ToggleVisibility(IlterisDictionaryEntry entry)
+
+    private string GetMeaningLink(IlterisDictionaryEntryVm entry)
     {
-        entry.MeaningVisible = !entry.MeaningVisible;
+        return $"{_meaningPageName}#{entry.EntryId.ToString()}";
     }
 }
