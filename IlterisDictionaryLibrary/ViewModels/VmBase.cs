@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace IlterisDictionary.ViewModels
+namespace IlterisDictionaryLibrary.ViewModels
 {
     public class VmBase
     {

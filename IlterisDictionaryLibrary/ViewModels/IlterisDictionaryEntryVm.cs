@@ -1,6 +1,6 @@
 ﻿using IlterisDictionaryLibrary.Data;
 
-namespace IlterisDictionary.ViewModels
+namespace IlterisDictionaryLibrary.ViewModels
 {
     public class IlterisDictionaryEntryVm : VmBase
     {

@@ -1,5 +1,10 @@
-﻿@page "/dictionary"
-@using IlterisDictionary.ViewModels
+﻿<!--Dictionary.razor-->
+@page "/dictionary"
+
+@using IlterisDictionary.Pages
+
+
+@using IlterisDictionaryLibrary.ViewModels
 
 
 <PageTitle>Search Dictionary</PageTitle>
@@ -48,36 +53,3 @@
 </table>
 
 
-@code
-{
-    private string _currentString = string.Empty;
-
-    const string _meaningPageName = "meanings";
-
-    private List<IlterisDictionaryEntryVm> _dictionaryEntries = new List<IlterisDictionaryEntryVm>();
-
-    private void LoadDictionaryEntries()
-    {
-        _dictionaryEntries.Clear();
-        for (int i = 0; i < 100; i++)
-        {
-            var array = new[] { $"{i}" };
-            var item = new IlterisDictionaryEntryVm(
-    protoTurkicRoot: array,
-    turkishVariant: array,
-    furtherReading: array,
-    loanwords: array,
-    meaning: $"{i}",
-    otherVariants: array,
-    furtherReadings: array,
-    relatedTo: array);
-            _dictionaryEntries.Add(item);
-        }
-    }
-
-
-    private string GetMeaningLink(IlterisDictionaryEntryVm entry)
-    {
-        return $"{_meaningPageName}#{entry.EntryId.ToString()}";
-    }
-}
