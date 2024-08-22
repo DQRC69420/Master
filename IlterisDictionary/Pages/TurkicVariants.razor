@@ -1,0 +1,39 @@
+﻿@page "/turkicvariants"
+@using IlterisDictionary.Pages
+@using IlterisDictionaryLibrary.ViewModels
+@inject Services.SharedData SharedData
+<PageTitle>Turkic Variants</PageTitle>
+
+
+<h3>TurkicVariants</h3>
+
+<table>
+    <thead>
+        <tr>
+            Root-Word
+        </tr>
+        @foreach (var language in LanguageNames)
+        {
+            <tr>
+                @language
+            </tr>
+        }
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                @OtherVariants?.RootWord
+            </td>
+            @foreach (var variant in Variants)
+            {
+                <td>
+                    @variant
+                </td>
+            }
+        </tr>
+    </tbody>
+</table>
+
+@code {
+    public int PageNumber { get; set; }
+}

@@ -2,20 +2,41 @@
 @page "/dictionary"
 
 @using IlterisDictionary.Pages
-
-
 @using IlterisDictionaryLibrary.ViewModels
-
+@inject Services.SharedData SharedData
 
 <PageTitle>Search Dictionary</PageTitle>
 
 <h1>Dictionary</h1>
 <div>
     <input type="text" @bind="@_currentString" />
-    <button @onclick=LoadDictionaryEntries>Search</button>
+    <button @onclick=SharedData.LoadDictionaryEntries>Search</button>
 </div>
 
 <hr />
+
+<Tabs>
+    <Tab Title="Home" Active="true">
+        <Content>
+            <p class="mt-3">This is the placeholder content for the <b>Home</b> tab.</p>
+        </Content>
+    </Tab>
+    <Tab Title="Profile">
+        <Content>
+            <p class="mt-3">This is the placeholder content for the <b>Profile</b> tab.</p>
+        </Content>
+    </Tab>
+    <Tab Title="Contact">
+        <Content>
+            <p class="mt-3">This is the placeholder content for the <b>Contact</b> tab.</p>
+        </Content>
+    </Tab>
+    <Tab Title="About">
+        <Content>
+            <p class="mt-3">This is the placeholder content for the <b>About</b> tab.</p>
+        </Content>
+    </Tab>
+</Tabs>
 
 <table border="1" class="table-bordered" width="100%">
     <thead>
@@ -32,7 +53,7 @@
 
     <tbody>
 
-        @foreach (var @row in @_dictionaryEntries)
+        @foreach (var @row in @SharedData.DictionaryEntries)
         {
             <tr>
                 <td>@row.ProtoTurkicRoot</td>
@@ -44,7 +65,11 @@
                     </div>
                 </td>
                 <td>@row.FurtherReadings</td>
-                <td>@row.OtherVariants</td>
+                <td>
+                    <div>
+                        <a href="">Go to Variants</a>
+                    </div>
+                </td>
                 <td>@row.RelatedTo</td>
             </tr>
         }

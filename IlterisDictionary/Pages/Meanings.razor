@@ -1,7 +1,8 @@
 ﻿@page "/meanings"
 @using IlterisDictionary.Pages
 @using IlterisDictionaryLibrary.ViewModels
-<PageTitle>Weather</PageTitle>
+@inject Services.SharedData SharedData
+<PageTitle>Meanings</PageTitle>
 
 <h1>Weather</h1>
 
@@ -17,7 +18,7 @@ else
         </tr>
     </thead>
     <tbody>
-        @foreach (var entry in _meaningEntryVms)
+        @foreach (var entry in MeaningEntries)
         {
             <tr>
                 <td>

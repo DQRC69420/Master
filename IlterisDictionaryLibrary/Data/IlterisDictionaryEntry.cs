@@ -2,7 +2,7 @@
 {
     public class IlterisDictionaryEntry
     {
-        public Guid EntryId { get; } = Guid.NewGuid();
+        public Guid EntryID { get; } = Guid.NewGuid();
 
         public IEnumerable<string> ProtoTurkicRoot { get; set; } = [];
 
@@ -14,8 +14,10 @@
 
         public IEnumerable<string> FurtherReadings { get; set; } = [];
 
-        public IEnumerable<string> OtherVariants { get; set; } = [];
+        public TurkicVariants OtherVariants { get; set; }
 
         public IEnumerable<string> RelatedTo { get; set; } = [];
+
+        public bool IsFavourited { get; set; } = false;
     }
 }

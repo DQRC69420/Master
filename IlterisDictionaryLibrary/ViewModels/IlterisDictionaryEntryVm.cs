@@ -12,7 +12,6 @@ namespace IlterisDictionaryLibrary.ViewModels
                 TurkishVariant = turkishVariant ?? throw new ArgumentNullException(nameof(turkishVariant)),
                 Meaning = meaning ?? throw new ArgumentNullException(nameof(meaning)),
                 Loanwords = loanwords ?? throw new ArgumentNullException(nameof(loanwords)),
-                OtherVariants = otherVariants ?? throw new ArgumentNullException(nameof(otherVariants)),
                 FurtherReadings = furtherReadings ?? throw new ArgumentNullException(nameof(furtherReadings)),
                 RelatedTo = relatedTo ?? throw new ArgumentNullException(nameof(relatedTo)),
             };
@@ -23,7 +22,7 @@ namespace IlterisDictionaryLibrary.ViewModels
         private readonly IlterisDictionaryLibrary.Data.IlterisDictionaryEntry _entry;
 
 
-        public Guid EntryId => _entry.EntryId;
+        public Guid EntryID => _entry.EntryID;
 
 
         public IEnumerable<string> ProtoTurkicRoot
@@ -60,10 +59,10 @@ namespace IlterisDictionaryLibrary.ViewModels
         }
 
 
-        public IEnumerable<string> OtherVariants
+        public TurkicVariants OtherVariants
         {
             get => _entry.OtherVariants;
-            init => _entry.OtherVariants = value;
+            set => _entry.OtherVariants = value;
         }
 
 

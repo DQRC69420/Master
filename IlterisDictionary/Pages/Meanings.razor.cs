@@ -1,19 +1,16 @@
-﻿using IlterisDictionaryLibrary.ViewModels;
+﻿using IlterisDictionary.Services;
+using IlterisDictionaryLibrary.ViewModels;
 
 namespace IlterisDictionary.Pages
 {
-    public partial class Meanings
+    public partial class Meanings 
     {
-    IEnumerable<MeaningEntryVm> _meaningEntryVms = [];
-
-        public void LoadMeaningEntries(IEnumerable<IlterisDictionaryEntryVm> dictionaryEntryVms)
+        public Meanings()
         {
-            _meaningEntryVms = dictionaryEntryVms.Select(d => new MeaningEntryVm(d.EntryId)
-            {
-                MeaningDescription = d.Meaning,
-                Word = d.TurkishVariant
-            });
+            MeaningEntries = SharedData.LoadMeaningEntries();
         }
+
+        public IEnumerable<MeaningEntryVm> MeaningEntries { get; }
     }
 }
 

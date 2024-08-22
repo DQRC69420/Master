@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RedditPostAndCommentArchive
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IlterisDictionary", "IlterisDictionary\IlterisDictionary.csproj", "{B5B65C1C-C937-42B8-8273-860134896DD6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IlterisDictionaryLibrary", "IlterisDictionaryLibrary\IlterisDictionaryLibrary.csproj", "{222EAA2B-3C08-4E47-82FF-8251D2B6B029}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IlterisDictionaryLibrary", "IlterisDictionaryLibrary\IlterisDictionaryLibrary.csproj", "{222EAA2B-3C08-4E47-82FF-8251D2B6B029}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
