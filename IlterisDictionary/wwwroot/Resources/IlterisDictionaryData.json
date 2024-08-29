@@ -1,0 +1,31 @@
+﻿{
+  "ab8229a0-6e80-4020-858f-c3ad2d031c3e": {
+    "EntryID": "ab8229a0-6e80-4020-858f-c3ad2d031c3e",
+    "ProtoTurkicRoot": [
+      "ac"
+    ],
+    "TurkishVariant": [
+      "ac"
+    ],
+    "Loanwords": [
+      "ac"
+    ],
+    "Meaning": "ac",
+    "FurtherReadings": [
+      "ac",
+      "sdcsd",
+      "qwd"
+    ],
+    "OtherVariants": {
+      "VariantID": "ab8229a0-6e80-4020-858f-c3ad2d031c3e",
+      "RootWord": "",
+      "LanguageVariantMap": {
+        "Bashkortic": "ac"
+      }
+    },
+    "RelatedTo": [
+      "ac"
+    ],
+    "IsFavourited": false
+  }
+}

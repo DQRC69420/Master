@@ -4,7 +4,7 @@ namespace IlterisDictionaryLibrary.ViewModels
 {
     public class IlterisDictionaryEntryVm : VmBase
     {
-        public IlterisDictionaryEntryVm(IEnumerable<string> protoTurkicRoot, IEnumerable<string> turkishVariant, IEnumerable<string> furtherReading, IEnumerable<string> loanwords, string meaning, IEnumerable<string> otherVariants, IEnumerable<string> furtherReadings, IEnumerable<string> relatedTo)
+        public IlterisDictionaryEntryVm(IEnumerable<string> protoTurkicRoot, IEnumerable<string> turkishVariant, IEnumerable<string> furtherReading, IEnumerable<string> loanwords, string meaning, Dictionary<TurkicLanguage, string> otherVariants, IEnumerable<string> furtherReadings, IEnumerable<string> relatedTo)
         {
             _entry = new IlterisDictionaryEntry()
             {
@@ -15,12 +15,19 @@ namespace IlterisDictionaryLibrary.ViewModels
                 FurtherReadings = furtherReadings ?? throw new ArgumentNullException(nameof(furtherReadings)),
                 RelatedTo = relatedTo ?? throw new ArgumentNullException(nameof(relatedTo)),
             };
+            OtherVariants = new TurkicVariants(EntryID) { LanguageVariantMap = otherVariants };
         }
 
+
+        public IlterisDictionaryEntryVm(IlterisDictionaryEntry entry)
+        {
+            _entry = entry;
+        }
 
 
         private readonly IlterisDictionaryLibrary.Data.IlterisDictionaryEntry _entry;
 
+        public IlterisDictionaryEntry EntryData => _entry;
 
         public Guid EntryID => _entry.EntryID;
 
@@ -35,13 +42,6 @@ namespace IlterisDictionaryLibrary.ViewModels
         {
             get => _entry.TurkishVariant;
             init => _entry.TurkishVariant = value;
-        }
-
-
-        public IEnumerable<string> FurtherReading
-        {
-            get => _entry.FurtherReadings;
-            init => _entry.FurtherReadings = value;
         }
 
 

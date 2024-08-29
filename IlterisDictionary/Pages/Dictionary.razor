@@ -3,6 +3,7 @@
 
 @using IlterisDictionary.Pages
 @using IlterisDictionaryLibrary.ViewModels
+@using System.Diagnostics
 @inject Services.SharedData SharedData
 
 <PageTitle>Search Dictionary</PageTitle>
@@ -10,35 +11,14 @@
 <h1>Dictionary</h1>
 <div>
     <input type="text" @bind="@_currentString" />
-    <button @onclick=SharedData.LoadDictionaryEntries>Search</button>
+    <button>Search</button>
 </div>
 
 <hr />
 
-<Tabs>
-    <Tab Title="Home" Active="true">
-        <Content>
-            <p class="mt-3">This is the placeholder content for the <b>Home</b> tab.</p>
-        </Content>
-    </Tab>
-    <Tab Title="Profile">
-        <Content>
-            <p class="mt-3">This is the placeholder content for the <b>Profile</b> tab.</p>
-        </Content>
-    </Tab>
-    <Tab Title="Contact">
-        <Content>
-            <p class="mt-3">This is the placeholder content for the <b>Contact</b> tab.</p>
-        </Content>
-    </Tab>
-    <Tab Title="About">
-        <Content>
-            <p class="mt-3">This is the placeholder content for the <b>About</b> tab.</p>
-        </Content>
-    </Tab>
-</Tabs>
 
-<table border="1" class="table-bordered" width="100%">
+
+<table border="1" class="table-bordered" width="100%" @onload=SharedData.LoadDictionaryEntries>
     <thead>
         <tr>
             <th width="14%">Proto-Turkic root</th>
@@ -53,7 +33,7 @@
 
     <tbody>
 
-        @foreach (var @row in @SharedData.DictionaryEntries)
+        @foreach (var @row in @SharedData.ShownEntries)
         {
             <tr>
                 <td>@row.ProtoTurkicRoot</td>
@@ -61,7 +41,7 @@
                 <td>@row.Loanwords</td>
                 <td>
                     <div>
-                        <a href="@GetMeaningLink(@row)">Show</a>
+                        <a href="@GetMeaningLink(@row)">@row.Meaning</a>
                     </div>
                 </td>
                 <td>@row.FurtherReadings</td>
@@ -76,5 +56,25 @@
 
     </tbody>
 </table>
+
+<ul class="nav nav-tabs">
+    @for (int i = 1; i < SharedData.DictionaryEntries.Count; i++)
+    {
+        if (i == 1)
+        {
+            <li class="nav-underline">
+                <button class="nav-link" @onclick="() => SharedData.LoadNextChunk(1)">1</button>
+            </li>
+        }
+        else if (i % 100 == 0)
+        {
+            int currentChunk = i;
+            <li class="nav-underline">
+                <button class="nav-link" @onclick="() => SharedData.LoadNextChunk(currentChunk)">@i</button>
+            </li>
+        }
+    }
+</ul>
+
 
 

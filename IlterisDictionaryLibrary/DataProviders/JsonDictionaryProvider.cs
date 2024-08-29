@@ -9,40 +9,83 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using IlterisDictionaryLibrary.ViewModels;
 using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics;
+using System.Net.Http.Json;
+using System.Text.Json.Nodes;
 
 namespace IlterisDictionaryLibrary.DataProviders
 {
     public class JsonDictionaryProvider : IDictionaryDataProvider
     {
-        public JsonDictionaryProvider()
+        //private readonly string _path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData, Environment.SpecialFolderOption.Create), "IlterisDictionary", "IlterisDictionaryData.json");
+        //private const string _dictionaryFolderName = "IlterisDictionaryData";
+        //private const string _dictionaryFileName = "IlterisDictionary";
+        private readonly string _path = @"\Resources\IlterisDictionaryData.json";
+
+        public async Task<Dictionary<Guid, IlterisDictionaryEntry>> DeserializeAll()
         {
-            
-        }
-
-        private const string _dictionaryFolderName = "IlterisDictionaryData";
-        private const string _dictionaryFileName = "IlterisDictionary";
-        private readonly string _path = Path.ChangeExtension(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), _dictionaryFolderName, _dictionaryFileName), ".json");
-
-
-        public Dictionary<Guid, IlterisDictionaryEntry> Deserialize()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Serialize(Dictionary<Guid, IlterisDictionaryEntry> data)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Serialize(IlterisDictionaryEntry data)
-        {
-            string? directoryPath = Path.GetDirectoryName(_path);
-            if (!Directory.Exists(directoryPath))
+            //var result = await File.ReadAllTextAsync(_path);
+            try
             {
-                Directory.CreateDirectory(directoryPath ?? "");
+                var httpClient = new HttpClient();
+                var result = await httpClient.GetStringAsync(_path);
+
+                if (!string.IsNullOrWhiteSpace(result))
+                {
+                    var deserializedObject = System.Text.Json.JsonSerializer.Deserialize<Dictionary<Guid, IlterisDictionaryEntry>>(result);
+                    return deserializedObject ?? [];
+                }
             }
-
-
+            catch (Exception ex)
+            {
+                Debug.Fail("something bad happened");
+            }
+            return [];
         }
+
+        [Obsolete]
+        public async void Serialize(Dictionary<Guid, IlterisDictionaryEntry> entries)
+        {
+            try
+            {
+                using var fileStream = new FileStream(_path, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None);
+                //using var reader = new StreamReader(fileStream, Encoding.UTF8);
+                var jsonNode = await JsonNode.ParseAsync(fileStream, new JsonNodeOptions() { PropertyNameCaseInsensitive = true });
+                var jsonArray = jsonNode?.AsArray();
+                foreach (var entry in entries)
+                {
+                    jsonArray?.Add(entry);
+                }
+
+                File.WriteAllText(_path, jsonArray?.ToJsonString(), Encoding.UTF8);
+            }
+            catch (Exception ex)
+            {
+                Debug.Fail("Something went wrong");
+            }
+        }
+
+        [Obsolete]
+        public async Task<Dictionary<Guid, IlterisDictionaryEntry>> DeserializeRange(int startIndex, int count)
+        {
+            using var fileStream = new FileStream(_path, FileMode.OpenOrCreate, FileAccess.Write, FileShare.Write);
+            using var jsonDocument = await System.Text.Json.JsonDocument.ParseAsync(fileStream);
+
+            var root = jsonDocument.RootElement;
+
+            Dictionary<Guid, IlterisDictionaryEntry> results = [];
+            if (root.ValueKind == JsonValueKind.Array)
+            {
+                foreach (var item in root.EnumerateArray().Skip(startIndex).Take(count))
+                {
+                    KeyValuePair<Guid, IlterisDictionaryEntry> pair = System.Text.Json.JsonSerializer.Deserialize<KeyValuePair<Guid, IlterisDictionaryEntry>>(item.GetRawText());
+                    results.Add(pair.Key, pair.Value);
+                }
+            }
+            return results;
+        }
+
+
+
     }
 }

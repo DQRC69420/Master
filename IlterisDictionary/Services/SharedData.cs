@@ -1,39 +1,59 @@
-﻿using IlterisDictionaryLibrary.ViewModels;
+﻿using IlterisDictionaryLibrary.DataProviders;
+using IlterisDictionaryLibrary.ViewModels;
 using System.Diagnostics;
 
 namespace IlterisDictionary.Services
 {
     public class SharedData
     {
+        private const int _chunkSize = 100;
+
         public readonly List<IlterisDictionaryEntryVm> DictionaryEntries = [];
 
-        public void LoadDictionaryEntries()
+        public IEnumerable<IlterisDictionaryEntryVm>? ShownEntries { get; set; } = [];
+
+        private readonly IDictionaryDataProvider _dataProvider = new JsonDictionaryProvider();
+
+        public async void LoadDictionaryEntries()
         {
             try
             {
-
                 DictionaryEntries.Clear();
 
-                for (int i = 0; i < 100; i++)
+                foreach (var entry in (await _dataProvider.DeserializeAll()).Select(e => new IlterisDictionaryEntryVm(e.Value)))
                 {
-                    var array = new[] { $"{i}" };
-                    var item = new IlterisDictionaryEntryVm(
-                        protoTurkicRoot: array,
-                        turkishVariant: array,
-                        furtherReading: array,
-                        loanwords: array,
-                        meaning: $"{i}",
-                        otherVariants: array,
-                        furtherReadings: array,
-                        relatedTo: array);
-                    DictionaryEntries.Add(item);
+                    DictionaryEntries.Add(entry);
                 }
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
-                Debug.Fail("something went wrong");
+                System.Diagnostics.Debug.Fail("something went wrong");
             }
         }
+
+
+        public void LoadNextChunk(int startingPoint)
+        {
+            int ending = startingPoint + _chunkSize;
+            if (int.IsNegative(ending))
+            {
+                ending = 0;
+            }
+
+            System.Diagnostics.Debug.Assert(ending > startingPoint, "shouldnt be possible");
+
+            List<IlterisDictionaryEntryVm> list = new(100);
+            for (int i = startingPoint; i < ending; i++)
+            {
+                if (i == DictionaryEntries.Count)
+                {
+                    break;
+                }
+                list.Add(DictionaryEntries[i]);
+            }
+            ShownEntries = list;
+        }
+
 
 
         public IEnumerable<MeaningEntryVm> LoadMeaningEntries()

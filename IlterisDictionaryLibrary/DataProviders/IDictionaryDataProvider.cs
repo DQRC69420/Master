@@ -9,10 +9,10 @@ namespace IlterisDictionaryLibrary.DataProviders
 {
     public interface IDictionaryDataProvider
     {
-        public void Serialize(Dictionary<Guid, IlterisDictionaryEntry> data);
+        public  void Serialize(Dictionary<Guid, IlterisDictionaryEntry> entries);
 
-        public void Serialize(IlterisDictionaryEntry data);
+        public Task<Dictionary<Guid, IlterisDictionaryEntry>> DeserializeRange(int startIndex, int count);
 
-        public Dictionary<Guid, IlterisDictionaryEntry> Deserialize();
+        public Task<Dictionary<Guid, IlterisDictionaryEntry>> DeserializeAll();
     }
 }

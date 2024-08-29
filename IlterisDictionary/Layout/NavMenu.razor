@@ -24,5 +24,26 @@
                 <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Meanings
             </NavLink>
         </div>
+
+        @if (IsDebugActive())
+        {
+            <div>
+                <NavLink class="nav-link" href="@Helper.Routes.Debug">
+                    <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span>Debug
+                </NavLink>
+            </div>
+        }
     </nav>
 </div>
+
+@code
+{
+    private bool IsDebugActive()
+    {
+#if DEBUG
+    return true;
+#elif !DEBUG
+        return false;
+#endif
+    }
+}
