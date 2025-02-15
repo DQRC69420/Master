@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using Microsoft.Maui.Hosting;
 
 namespace MAUIHostForBlazor
 {
@@ -16,7 +17,8 @@ namespace MAUIHostForBlazor
                 });
 
 #if DEBUG
-    		builder.Logging.AddDebug();
+            builder.Logging.AddDebug();
+            builder.Services.AddBlazorWebViewDeveloperTools();
 #endif
 
             return builder.Build();

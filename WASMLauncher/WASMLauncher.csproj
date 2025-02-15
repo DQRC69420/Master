@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="9.0.2" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.2" />
     <PackageReference Include="Microsoft.NET.Runtime.WebAssembly.Wasi.Sdk" Version="9.0.2" />
     <PackageReference Include="System.Text.Json" Version="9.0.2" />
   </ItemGroup>

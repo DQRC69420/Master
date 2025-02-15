@@ -1,13 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:blazor="clr-namespace:Microsoft.AspNetCore.Components.WebView.Maui;assembly=Microsoft.AspNetCore.Components.WebView.Maui"
              x:Class="MAUIHostForBlazor.MainPage">
 
     <ScrollView>
         <VerticalStackLayout
             Padding="30,0"
             Spacing="25">
-            <Image
+            <!--<Image
                 Source="dotnet_bot.png"
                 HeightRequest="185"
                 Aspect="AspectFit"
@@ -29,7 +30,15 @@
                 Text="Click me" 
                 SemanticProperties.Hint="Counts the number of times you click"
                 Clicked="OnCounterClicked"
-                HorizontalOptions="Fill" />
+                HorizontalOptions="Fill" />-->
+            
+            
+            <!--<blazor:BlazorWebView>
+                <blazor:BlazorWebView.HostPage>wwwroot/index.html</blazor:BlazorWebView.HostPage>
+                <blazor:BlazorWebView.RootComponents>
+                    <blazor:RootComponent Selector="#app" ComponentType="{x:Type local:Main}" />
+                </blazor:BlazorWebView.RootComponents>
+            </blazor:BlazorWebView>-->
         </VerticalStackLayout>
     </ScrollView>
 
