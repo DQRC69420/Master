@@ -3,6 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
 			 xmlns:blazor="clr-namespace:Microsoft.AspNetCore.Components.WebView.Maui;assembly=Microsoft.AspNetCore.Components.WebView.Maui"
 			 x:Class="MAUIBlazorHost.MainPage">
-	<blazor:BlazorWebView HostPage="wwwroot/index.html" BackgroundColor="BlueViolet">
+	<blazor:BlazorWebView HostPage="Resources\Blazor\wwwroot\index.html">
 	</blazor:BlazorWebView>
 </ContentPage>
