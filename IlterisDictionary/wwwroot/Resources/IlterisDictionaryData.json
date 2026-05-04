@@ -1,31 +1,61 @@
 ﻿{
-  "ab8229a0-6e80-4020-858f-c3ad2d031c3e": {
-    "EntryID": "ab8229a0-6e80-4020-858f-c3ad2d031c3e",
-    "ProtoTurkicRoot": [
-      "ac"
-    ],
-    "TurkishVariant": [
-      "ac"
-    ],
-    "Loanwords": [
-      "ac"
-    ],
-    "Meaning": "ac",
-    "FurtherReadings": [
-      "ac",
-      "sdcsd",
-      "qwd"
-    ],
-    "OtherVariants": {
-      "VariantID": "ab8229a0-6e80-4020-858f-c3ad2d031c3e",
-      "RootWord": "",
-      "LanguageVariantMap": {
-        "Bashkortic": "ac"
-      }
-    },
-    "RelatedTo": [
-      "ac"
-    ],
-    "IsFavourited": false
-  }
+	"ab8229a0-6e80-4020-858f-c3ad2d031c3e": {
+		"EntryID": "ab8229a0-6e80-4020-858f-c3ad2d031c3e",
+		"ProtoTurkicRoot": [
+			"ac",
+			"cwcer",
+			"dwecevrvwvw"
+		],
+		"TurkishVariant": [
+			"ac"
+		],
+		"Loanwords": [
+			"ac"
+		],
+		"Meaning": "ac",
+		"FurtherReadings": [
+			"ac",
+			"sdcsd",
+			"qwd"
+		],
+		"OtherVariants": {
+			"VariantID": "ab8229a0-6e80-4020-858f-c3ad2d031c3e",
+			"RootWord": "pkop",
+			"LanguageVariantMap": {
+				"Bashkortic": "ac"
+			}
+		},
+		"RelatedTo": [
+			"ac"
+		],
+		"IsFavourited": false
+	},
+	"67396f8f-48e4-43b9-9ff6-8281f3f5e964": {
+		"EntryID": "67396f8f-48e4-43b9-9ff6-8281f3f5e964",
+		"ProtoTurkicRoot": [
+			"hello"
+		],
+		"TurkishVariant": [
+			"hvre"
+		],
+		"Loanwords": [
+			"fref"
+		],
+		"Meaning": "ervj rojgtrbmergvf odfnerivnernv eirt ee e rmeroi erier  ",
+		"FurtherReadings": [
+			"fre3rg34"
+		],
+		"OtherVariants": {
+			"VariantID": "67396f8f-48e4-43b9-9ff6-8281f3f5e964",
+			"RootWord": "hv8z",
+			"LanguageVariantMap": {
+				"Balkan_Turkic": "ouzfi",
+				"Karakalpak": "poiguozv"
+			}
+		},
+		"RelatedTo": [
+			"4p34o5g45g"
+		],
+		"IsFavourited": false
+	}
 }

@@ -9,5 +9,7 @@
         public const string Meanings = "meanings";
 
         public const string Dictionary = "dictionary";
+
+        public const string RelatedTo = "relatedTo";
     }
 }

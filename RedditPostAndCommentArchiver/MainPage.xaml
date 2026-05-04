@@ -44,6 +44,12 @@
                 </Button.Shadow>
             </Button>
 
+			<Button Text="Compress existing Json"
+					Clicked="Button_Clicked_2"
+					>
+				
+			</Button>
+
             <Label
              Text="If you already have a save file, select it, otherwise select a folder to put the savefile to."
              Style="{StaticResource SubHeadline}"

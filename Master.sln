@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.9.34728.123
+# Visual Studio Version 18
+VisualStudioVersion = 18.0.11222.15
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RedditPostAndCommentArchiver", "RedditPostAndCommentArchiver\RedditPostAndCommentArchiver.csproj", "{20C8DEA4-5562-4FAA-87A0-857656B0E090}"
 EndProject
@@ -9,11 +9,21 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IlterisDictionary", "Ilteri
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IlterisDictionaryLibrary", "IlterisDictionaryLibrary\IlterisDictionaryLibrary.csproj", "{222EAA2B-3C08-4E47-82FF-8251D2B6B029}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WASMLauncher", "WASMLauncher\WASMLauncher.csproj", "{ABC9B37D-8ECF-45BA-9508-F703E73D4D14}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorExample", "BlazorExample\BlazorExample.csproj", "{35A77AB0-66D7-4CB9-B0C8-6AE51F1BCCDA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MAUIBlazorHost", "MAUIBlazorHost\MAUIBlazorHost.csproj", "{FBE6C5D9-6B5C-45B5-8A87-0E77A60D7EB6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UdkuCaller", "UdkuCaller\UdkuCaller.csproj", "{166EEE1C-7D72-4D7B-B1DD-A013826DA867}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PowerShellPlayground", "PowerShellPlayground\PowerShellPlayground.csproj", "{7F023B58-EB6B-4091-A374-2F482E50223B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blazor_MVVM_BaseComponents", "Blazor_MVVM_BaseComponents\Blazor_MVVM_BaseComponents.csproj", "{4E0C3BA7-208B-4322-B54F-C2D5E9C88976}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blazor_UI_BaseComponents", "Blazor_UI_BaseComponents\Blazor_UI_BaseComponents.csproj", "{465B8339-5C9E-44EF-9F20-76F21952D5B6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CultureMuseum", "CultureMuseum\CultureMuseum\CultureMuseum.csproj", "{6AAE0572-6CF7-4264-B239-E05CC7D742CB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CultureMuseum.Client", "CultureMuseum\CultureMuseum.Client\CultureMuseum.Client.csproj", "{69EAF60E-087B-4601-81AA-C38BDE3E0223}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,10 +45,6 @@ Global
 		{222EAA2B-3C08-4E47-82FF-8251D2B6B029}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{222EAA2B-3C08-4E47-82FF-8251D2B6B029}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{222EAA2B-3C08-4E47-82FF-8251D2B6B029}.Release|Any CPU.Build.0 = Release|Any CPU
-		{ABC9B37D-8ECF-45BA-9508-F703E73D4D14}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{ABC9B37D-8ECF-45BA-9508-F703E73D4D14}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{ABC9B37D-8ECF-45BA-9508-F703E73D4D14}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{ABC9B37D-8ECF-45BA-9508-F703E73D4D14}.Release|Any CPU.Build.0 = Release|Any CPU
 		{35A77AB0-66D7-4CB9-B0C8-6AE51F1BCCDA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{35A77AB0-66D7-4CB9-B0C8-6AE51F1BCCDA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{35A77AB0-66D7-4CB9-B0C8-6AE51F1BCCDA}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -49,6 +55,30 @@ Global
 		{FBE6C5D9-6B5C-45B5-8A87-0E77A60D7EB6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FBE6C5D9-6B5C-45B5-8A87-0E77A60D7EB6}.Release|Any CPU.Build.0 = Release|Any CPU
 		{FBE6C5D9-6B5C-45B5-8A87-0E77A60D7EB6}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{166EEE1C-7D72-4D7B-B1DD-A013826DA867}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{166EEE1C-7D72-4D7B-B1DD-A013826DA867}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{166EEE1C-7D72-4D7B-B1DD-A013826DA867}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{166EEE1C-7D72-4D7B-B1DD-A013826DA867}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F023B58-EB6B-4091-A374-2F482E50223B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F023B58-EB6B-4091-A374-2F482E50223B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F023B58-EB6B-4091-A374-2F482E50223B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F023B58-EB6B-4091-A374-2F482E50223B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4E0C3BA7-208B-4322-B54F-C2D5E9C88976}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E0C3BA7-208B-4322-B54F-C2D5E9C88976}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4E0C3BA7-208B-4322-B54F-C2D5E9C88976}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4E0C3BA7-208B-4322-B54F-C2D5E9C88976}.Release|Any CPU.Build.0 = Release|Any CPU
+		{465B8339-5C9E-44EF-9F20-76F21952D5B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{465B8339-5C9E-44EF-9F20-76F21952D5B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{465B8339-5C9E-44EF-9F20-76F21952D5B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{465B8339-5C9E-44EF-9F20-76F21952D5B6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6AAE0572-6CF7-4264-B239-E05CC7D742CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6AAE0572-6CF7-4264-B239-E05CC7D742CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6AAE0572-6CF7-4264-B239-E05CC7D742CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6AAE0572-6CF7-4264-B239-E05CC7D742CB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{69EAF60E-087B-4601-81AA-C38BDE3E0223}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{69EAF60E-087B-4601-81AA-C38BDE3E0223}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{69EAF60E-087B-4601-81AA-C38BDE3E0223}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{69EAF60E-087B-4601-81AA-C38BDE3E0223}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

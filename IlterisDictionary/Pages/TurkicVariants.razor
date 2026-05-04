@@ -20,6 +20,8 @@
         }
     </thead>
     <tbody>
+        @if (IsVisible)
+        {
         <tr>
             <td>
                 @OtherVariants?.RootWord
@@ -30,10 +32,30 @@
                     @variant
                 </td>
             }
+            </tr>
+        }
+        else
+        {
+            <tr>
+                <td>
+                    <h1>not available</h1>
+                </td>
+            </tr>
+        }
+        <tr>
+            <td>
+                <button @onclick=Toggle></button>
+            </td>
         </tr>
     </tbody>
 </table>
 
 @code {
     public int PageNumber { get; set; }
+    public bool IsVisible { get; set; }
+
+    public void Toggle()
+    {
+        IsVisible = !IsVisible;
+    }
 }

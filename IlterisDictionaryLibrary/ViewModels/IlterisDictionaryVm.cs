@@ -1,23 +1,31 @@
 ﻿using IlterisDictionaryLibrary.DataProviders;
+using Microsoft.AspNetCore.Components;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
 namespace IlterisDictionaryLibrary.ViewModels
 {
-    public class IlterisDictionaryVm : VmBase, INotifyPropertyChanged
-    {
+	public class IlterisDictionaryVm : VmBase, INotifyPropertyChanged
+	{
+		private readonly NavigationManager _manager;
 
-        private readonly JsonDictionaryProvider _dataProvider = new JsonDictionaryProvider();
+		public IlterisDictionaryVm(NavigationManager manager)
+		{
+			_manager = manager;
+			_dataProvider = new JsonDictionaryProvider(_manager);
+		}
 
-        private IEnumerable<IlterisDictionaryEntryVm> entries = [];
-        public IEnumerable<IlterisDictionaryEntryVm> Entries
-        {
-            get => entries;
-            set
-            {
-                entries = value;
-                NotifyPropertyChanged();
-            }
-        }
-    }
+		private readonly JsonDictionaryProvider _dataProvider;
+
+		private IEnumerable<IlterisDictionaryEntryVm> _entries = [];
+		public IEnumerable<IlterisDictionaryEntryVm> Entries
+		{
+			get => _entries;
+			set
+			{
+				_entries = value;
+				NotifyPropertyChanged();
+			}
+		}
+	}
 }

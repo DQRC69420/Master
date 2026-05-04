@@ -1,0 +1,289 @@
+@page "/"
+@inherits ComponentWithVmBase<HomeVm>
+
+@if (ViewModel != null && _isInitialized)
+{
+    <div @ref=_bodySubstituteDiv class="AS4-WebGUI-Style page-div justify-content-center align-items-center table-wrapper" style="width: 100%; background-color: @BackgroundColor;">
+        <PageTitle>AS4_GW_WebGUI</PageTitle>
+        <h1 class="text-center" style="padding:20px 20px;">AS4_GW Messages</h1>
+
+        <span style="cursor: pointer; font-size: 30px;" @onclick=OpenSidebarMenu>&#9776;</span>
+        <div>
+            <div class="sidenav" style="width: @(SidebarWidth)px; background-color: @(SidebarColor);">
+                <button @onclick=CloseSidebarMenu class="btn-close"></button>
+                <ColorMenu AssignCascadingColor="async (val) => AssignCascadingColor(val)" SelectedColor="@BackgroundColor" />
+                <label style="margin-top:5px;">Rows per page:</label>
+                <input @ref=_upDownInput type="number" value="@(ViewModel.SinglePageCount)" @onchange=ChangeSinglePageCount />
+            </div>
+            <div class="sidebar-backdrop @(BackdropStatus)"></div>
+        </div>
+
+        <div class="vstack" style="width: 100%">
+
+            <div>
+                <tr class="no-hover">
+                    <th colspan="@ViewModel.Headers.Count" style="padding-bottom: 10px; border: none;">
+                        <button class="btn btn-primary" @onclick=ToggleFilterTableVisibility>
+                            Filter
+                        </button>
+                    </th>
+                </tr>
+
+                <tr class="@GetFilterTableClass()" id="filterTable">
+                    <th colspan="@ViewModel.Headers.Count" style="padding-bottom: 0px;">
+                        <FilterTable TableBackgroundColor="@ForegroundElementsColor" FilterItemsAction="ViewModel.ApplyFilter" />
+                    </th>
+                </tr>
+            </div>
+
+            <div class="vstack">
+                <label>Sort by:</label>
+                <select class="form-select"
+                        @bind=ViewModel.ColumnIdToSortAfter
+                        @bind:after="OnSortChanged">
+                    <option value="">None</option>
+                    @foreach (var headers in ViewModel.Headers)
+                    {
+                        <option value=@headers.Key>@headers.Value.Header</option>
+                    }
+                </select>
+            </div>
+
+            <h5 style="margin-bottom: 0px;">Exclusion zone:</h5>
+            <div @ref=_exclusionDiv class="hstack" style="height: 50px; margin: 10px 0px; background-color: @(ForegroundElementsColor);" @ondragover:preventDefault="true" @ondrop=DropIntoExclusionZone>
+                @foreach (var item in ViewModel?.ExcludedHeaders ?? [])
+                {
+                    <div @onclick="(e) => IncludeColumn(item.Key)" style="cursor: pointer; border: solid; align-content: center; vertical-align: middle; margin: 5px; background-color: @(AdjustColorBrightness(ForegroundElementsColor, 0.4))px;" class="hstack">
+                        <label style="cursor: inherit;">
+                            @item.Value.Header
+                        </label>
+                        <button class="btn btn-close">
+                        </button>
+                    </div>
+                }
+            </div>
+
+            <table @ref=_messagesTable id="@nameof(_messagesTable)" class="table column-border-only table-striped table-hover-no-hover resizable-table" style="margin-bottom: @(TableBottomMargin)px; background-color: @(ForegroundElementsColor);">
+                <thead @ref=_theadTag>
+                    <tr>
+                        @foreach (var header in ViewModel.Headers)
+                        {
+                            <th data-index="@(header.Key)" data-colKey="@(header.Key)" style="min-width: 10px; width: @(Widths.ContainsKey(header.Key) ? Widths[header.Key] : GetColumnWidth(header.Key))px; vertical-align: middle; text-align: center; padding: 0px;">
+                                <div class="hstack th-content-wrapper">
+                                    <div style="margin: 8px; cursor: grab" draggable="true" @ondragstart="(e) => HeaderDragStartEvent(e, header.Key)" @ondragover:preventDefault="true" @ondragover="(e) => HeaderDragOverEvent(e, header.Key)" @ondrop="HeaderDropEvent">
+                                        <span class="column-label">
+                                            @header.Value.Header
+                                        </span>
+                                    </div>
+                                    <div class="resizer"></div>
+                                </div>
+                            </th>
+                        }
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var tableItem in ViewModel?.Items ?? [])
+                    {
+                        var isExpanded = _expandedRows.Contains(tableItem.Id);
+                        var nrrFull = _expandedNrrRows.Contains(tableItem.Id);
+                        var nrrText = tableItem.Nrr;
+                        var nrrTruncated = !string.IsNullOrWhiteSpace(nrrText) && nrrText.Length > NrrPreviewLength;
+                        <tr style="cursor: pointer;" @onclick="() => ToggleRow(tableItem.Id)">
+                            @foreach (var header in ViewModel.Headers)
+                            {
+                                var property = tableItem.GetType().GetProperty(header.Value.Header);
+                                if (property != null)
+                                {
+                                    <td style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 200px">@property.GetValue(tableItem)</td>
+                                }
+                            }
+                        </tr>
+                        <tr class="no-hover detail-row" style="background-color @(AdjustColorBrightness(ForegroundElementsColor, 0.5));">
+                            <td colspan="@ViewModel.Headers.Count">
+                                <div class="detail-inner" data-row-id="@tableItem.Id">
+                                    <strong>Error:</strong> @(string.IsNullOrWhiteSpace(tableItem.Error) ? "—" : tableItem.Error)
+                                    <br />
+                                    <strong>NRR:</strong>
+                                    @if (string.IsNullOrWhiteSpace(nrrText))
+                                    {
+                                        <span>—</span>
+                                    }
+                                    else if (nrrFull || !nrrTruncated)
+                                    {
+                                        <span>@nrrText</span>
+                                        @if (nrrTruncated)
+                                        {
+                                            //StopPropagation prevents that the parent OnClick is activated with the child OnClick. Its done so that the parent row doesnt close
+                                            <span @onclick="() => ToggleNrr(tableItem.Id)" @onclick:stopPropagation="true" style="cursor: pointer; color: #0d6efd; margin-left: 6px;">[Show less]</span>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <span>@(nrrText[..NrrPreviewLength])…</span>
+                                        <span @onclick="() => ToggleNrr(tableItem.Id)" @onclick:stopPropagation="true" style="cursor: pointer; color: #0d6efd; margin-left: 6px;">[Show full]</span>
+                                    }
+                                    @{
+                                        var edifactMessages = DeserializeEdifactMessages(tableItem.EdifactMessages);
+                                    }
+                                    @if (edifactMessages.Count > 0)
+                                    {
+                                        <br />
+                                        <strong>EDIFACT Messages:</strong>
+                                        <table class="table table-sm table-bordered edifact-table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Interchange Ref</th>
+                                                    <th>Document Type</th>
+                                                    <th>Sender</th>
+                                                    <th>Receiver</th>
+                                                    <th>Timestamp</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var em in edifactMessages)
+                                                {
+                                                    <tr>
+                                                        <td>@(em.InterchangeRef ?? "—")</td>
+                                                        <td>@(em.DocumentType ?? "—")</td>
+                                                        <td>@(em.Sender ?? "—")</td>
+                                                        <td>@(em.Receiver ?? "—")</td>
+                                                        <td>@(em.Timestamp?.ToString("yyyy-MM-dd HH:mm:ss") ?? "—")</td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    }
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                    <tr>
+                        <td colspan="@ViewModel.Headers.Count">
+                            <div class="hstack">
+                                <button class="btn btn-primary" style="margin-right: 10px" @onclick=SetLayoutConfigurations>Save Layout</button>
+                                <button class="btn btn-primary" style="margin-right: 10px" @onclick=ResetColumnWidths>Reset equal widths</button>
+                                <button class="btn btn-primary" @onclick=ResetPageLayout>Reset page layout</button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="vstack" @ref="_paginationBar" id="#@nameof(_paginationBar)">
+                <MessagesPaginationBar NavbarBottomMargin="HorizontalScrollbarHeight" ViewModel="ViewModel" />
+            </div>
+        </div>
+    </div>
+    <BreakObserver VMs="[ViewModel, ViewModel.Filter]" Components="[this]" Action="() => { }" />
+}
+
+@code
+{
+    private ElementReference _bodySubstituteDiv;
+    private ElementReference _theadTag;
+    private ElementReference _paginationBar;
+    private ElementReference _exclusionDiv;
+    private ElementReference _messagesTable;
+    private ElementReference _upDownInput;
+
+    private double _tableBottomMargin;
+    public double TableBottomMargin
+    {
+        get => _tableBottomMargin;
+        set
+        {
+            if (!Equals(_tableBottomMargin, value))
+            {
+                _tableBottomMargin = value;
+                StateHasChanged();
+            }
+        }
+    }
+
+    [Inject]
+    private IJSRuntime JS { get; set; } = default!;
+
+    private async Task<Dictionary<Guid, int>> GetColumnWidths()
+        => await JS.InvokeAsync<Dictionary<Guid, int>>("getColumnWidths", _messagesTable, ViewModel.ExcludedHeaders);
+
+    private async Task UpdateTableMargin()
+        => TableBottomMargin = await JS.InvokeAsync<int>("getNavbarHeight", _paginationBar);
+
+    private async Task InitializeResizableColumns()
+    {
+        try
+        {
+            await JS.InvokeVoidAsync("resizePushPull.init", _theadTag);
+        }
+        catch (Exception ex)
+        {
+            await Alert(ex.Message);
+        }
+    }
+
+    private async Task ReInitializeResizableColumns()
+        => await JS.InvokeVoidAsync("reinitResizableTable", _messagesTable);
+
+    private async Task<string> GetHexFromColorName()
+    {
+        try
+        {
+            return await JS.InvokeAsync<string>("getHexColorCode", _bodySubstituteDiv);
+        }
+        catch (Exception e)
+        {
+            await Alert(e.Message);
+            throw new InvalidOperationException("something went wrong when evaluating color in JS", e);
+        }
+    }
+
+    private async Task<int> GetHScrollbarHeight()
+        => await JS.InvokeAsync<int>("getPageHorizontalScrollbarHeight");
+
+    private async Task SaveLayoutData(string json)
+        => await JS.InvokeVoidAsync("layoutStore.saveLocal", nameof(UserConfigurations), json);
+
+    private async Task<int> GetColumnWidth(Guid columnId)
+        => await JS.InvokeAsync<int>("getColumnWidth", _messagesTable, columnId);
+
+    private async Task ResetColumnWidths()
+    {
+        try
+        {
+            await JS.InvokeVoidAsync("resetEqualColumnWidths", _messagesTable);
+        }
+        catch (Exception ex)
+        {
+            await Alert(ex.Message);
+        }
+    }
+
+
+    private async Task SetRowHeight(long id, bool expand)
+        => await JS.InvokeVoidAsync("setRowHeight", _messagesTable, id, expand);
+
+
+    public int SidebarWidth { get; set; }
+    public string BackdropStatus { get; set; } = "";
+
+
+    private void OpenSidebarMenu()
+    {
+        SidebarWidth = 250; BackdropStatus = "show";
+    }
+
+
+    private void CloseSidebarMenu()
+    {
+        SidebarWidth = 0; BackdropStatus = "";
+    }
+
+
+    private async Task ResetAllRowHeights()
+    {
+        await JS.InvokeVoidAsync("resetAllRowHeights", _messagesTable);
+    }
+
+
+    private async Task Alert(string message)
+        => await JS.InvokeVoidAsync("showAlert", message);
+}

@@ -1,0 +1,37 @@
+﻿.GUI-Style {
+	padding: 10px 10px 10px 10px;
+}
+
+.default-div {
+	background-color: white;
+}
+
+.page-div {
+	min-height: 100vh;
+}
+
+.table-hover-no-hover > tbody > tr:not(.no-hover):hover {
+	--bs-table-accent-bg: var(--bs-table-hover-bg);
+	color: var(--bs-table-hover-color)
+}
+
+.table-wrapper {
+	width: 100%;
+	max-width: 100%;
+	overflow-x: auto;
+	overflow-y: hidden;
+	display: block;
+}
+
+.non-draggable {
+	-webkit-user-drag: none;
+	-moz-user-select: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	pointer-events: auto;
+}
+
+.drag-handle {
+	cursor: grab;
+}

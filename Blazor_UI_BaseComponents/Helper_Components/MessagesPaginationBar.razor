@@ -1,0 +1,35 @@
+@using Blazor_MVVM_BaseComponents.ViewModel
+
+<nav style="margin-bottom: @(NavbarBottomMargin)px;" class="fixed-bottom navbar navbar-nav">
+    <ul class="pagination">
+        <li class="page-item">
+            <button class="page-link" @onclick="(mea) => AssignNewPage(ViewModel.PageCount, ViewData.AddOrRemove.Remove, ViewData.PaginationSteps.All)">&lt;&lt;&lt; Skip End</button>
+        </li>
+        <li class="page-item">
+            <button class="page-link" @onclick="(mea) => AssignNewPage(HomeVm.PageRange, ViewData.AddOrRemove.Remove, ViewData.PaginationSteps.Chunk)">&lt;&lt; Skip Backwards</button>
+        </li>
+        <li class="page-item">
+            <button class="page-link" @onclick="(mea) => AssignNewPage(1, ViewData.AddOrRemove.Remove, ViewData.PaginationSteps.Singular)">&lt;-- Previous</button>
+        </li>
+
+        @for (int pageIndex = PaginatedVm.RangeStart; pageIndex <= PaginatedVm.RangeEnd; pageIndex++)
+        {
+            var stationaryPageIndex = pageIndex;
+            <li class="page-item @(pageIndex == PaginatedVm.CurrentPage ? "active" : "")">
+                <button class="page-link" @onclick="(mea) => AssignNewPage(stationaryPageIndex, ViewData.AddOrRemove.None, ViewData.PaginationSteps.None)">@pageIndex</button>
+            </li>
+        }
+
+        <li class="page-item">
+            <button class="page-link" @onclick="(mea) => AssignNewPage(1, ViewData.AddOrRemove.Add, ViewData.PaginationSteps.Singular)">Next --&gt;</button>
+        </li>
+        <li class="page-item">
+            <button class="page-link" @onclick="(mea) => AssignNewPage(HomeVm.PageRange, ViewData.AddOrRemove.Add, ViewData.PaginationSteps.Chunk)">Skip Forward &gt;&gt;</button>
+        </li>
+        <li class="page-item">
+            <button class="page-link" @onclick="(mea) => AssignNewPage(ViewModel.PageCount, ViewData.AddOrRemove.Add, ViewData.PaginationSteps.All)">Skip End &gt;&gt;&gt;</button>
+        </li>
+    </ul>
+</nav>
+
+@code { }

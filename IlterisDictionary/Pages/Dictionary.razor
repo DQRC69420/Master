@@ -10,70 +10,66 @@
 
 <h1>Dictionary</h1>
 <div>
-    <input type="text" @bind="@_currentString" />
-    <button>Search</button>
+	<input type="text" @bind="@_searchString" />
+	<button @onclick=SharedData.LoadDictionaryEntries>Search</button>
 </div>
-
 <hr />
 
 
 
-<table border="1" class="table-bordered" width="100%" @onload=SharedData.LoadDictionaryEntries>
-    <thead>
-        <tr>
-            <th width="14%">Proto-Turkic root</th>
-            <th width="14%">Turkish variant</th>
-            <th width="14%">Loanword</th>
-            <th width="14%">Meaning</th>
-            <th width="14%">further reading</th>
-            <th width="14%">other variants</th>
-            <th width="14%">related to</th>
-        </tr>
-    </thead>
+<table border="1" class="table-bordered" width="100%">
+	<thead>
+		<tr>
+			<th width="14%">Proto-Turkic root</th>
+			<th width="14%">Turkish variant</th>
+			<th width="14%">Loanword</th>
+			<th width="14%">Meaning</th>
+			<th width="14%">further reading</th>
+			<th width="14%">other variants</th>
+			<th width="14%">related to</th>
+		</tr>
+	</thead>
 
-    <tbody>
-
-        @foreach (var @row in @SharedData.ShownEntries)
-        {
-            <tr>
-                <td>@row.ProtoTurkicRoot</td>
-                <td>@row.TurkishVariant</td>
-                <td>@row.Loanwords</td>
-                <td>
-                    <div>
-                        <a href="@GetMeaningLink(@row)">@row.Meaning</a>
-                    </div>
-                </td>
-                <td>@row.FurtherReadings</td>
-                <td>
-                    <div>
-                        <a href="">Go to Variants</a>
-                    </div>
-                </td>
-                <td>@row.RelatedTo</td>
-            </tr>
-        }
-
-    </tbody>
+	<tbody>
+		@foreach (var @row in @SharedData.DictionaryEntries)
+		{
+			<tr>
+				<td>
+					@string.Join(", ", row.ProtoTurkicRoot)
+				</td>
+				<td>@string.Join(", ", row.TurkishVariant)</td>
+				<td>@string.Join(", ", row.Loanwords)</td>
+				<td>@row.Meaning</td>
+				<td>@string.Join(", ", row.FurtherReadings)</td>
+				<td>@row.OtherVariants</td>
+				<td>
+					@foreach(var @rowContent in row.RelatedTo)
+					{
+						<a href=@GetRelationsLink(rowContent)>@rowContent</a>	
+					}
+					</td>
+			</tr>
+		}
+	</tbody>
 </table>
 
 <ul class="nav nav-tabs">
-    @for (int i = 1; i < SharedData.DictionaryEntries.Count; i++)
-    {
-        if (i == 1)
-        {
-            <li class="nav-underline">
-                <button class="nav-link" @onclick="() => SharedData.LoadNextChunk(1)">1</button>
-            </li>
-        }
-        else if (i % 100 == 0)
-        {
-            int currentChunk = i;
-            <li class="nav-underline">
-                <button class="nav-link" @onclick="() => SharedData.LoadNextChunk(currentChunk)">@i</button>
-            </li>
-        }
-    }
+	@for (int i = 1; i < SharedData.DictionaryEntries.Count; i++)
+	{
+		if (i == 1)
+		{
+			<li class="nav-underline">
+				<button class="nav-link" @onclick="() => SharedData.LoadNextChunk(1)">1</button>
+			</li>
+		}
+		else if (i % 100 == 0)
+		{
+			int currentChunk = i;
+			<li class="nav-underline">
+				<button class="nav-link" @onclick="() => SharedData.LoadNextChunk(currentChunk)">@i</button>
+			</li>
+		}
+	}
 </ul>
 
 

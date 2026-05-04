@@ -58,5 +58,16 @@ namespace RedditPostAndCommentArchiver
         {
             return await FolderPicker.Default.PickAsync();
         }
-    }
+
+		private async void Button_Clicked_2(object sender, EventArgs e)
+		{
+            var path = await CallFilePicker();
+			PostArchiverVm? postArchiverVm = (BindingContext as PostArchiverVm);
+            if (postArchiverVm != null)
+            {
+                postArchiverVm.SelectedPath = path.FullPath;
+                postArchiverVm.ChooseCompressingJson.Execute(null);
+            }
+		}
+	}
 }

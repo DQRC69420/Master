@@ -1,70 +1,79 @@
-﻿using IlterisDictionaryLibrary.DataProviders;
+﻿using IlterisDictionaryLibrary.Data;
+using IlterisDictionaryLibrary.DataProviders;
 using IlterisDictionaryLibrary.ViewModels;
+using Microsoft.AspNetCore.Components;
 using System.Diagnostics;
 
 namespace IlterisDictionary.Services
 {
-    public class SharedData
-    {
-        private const int _chunkSize = 100;
+	public class SharedData
+	{
+		private readonly NavigationManager _manager;
+		public SharedData(NavigationManager manager)
+		{
+			_manager = manager;
+			_dataProvider = new JsonDictionaryProvider(_manager);
+		}
 
-        public readonly List<IlterisDictionaryEntryVm> DictionaryEntries = [];
+		private const int _chunkSize = 100;
 
-        public IEnumerable<IlterisDictionaryEntryVm>? ShownEntries { get; set; } = [];
+		public readonly List<IlterisDictionaryEntryVm> DictionaryEntries = [];
 
-        private readonly IDictionaryDataProvider _dataProvider = new JsonDictionaryProvider();
+		public IEnumerable<IlterisDictionaryEntryVm>? ShownEntries { get; set; } = [];
 
-        public async void LoadDictionaryEntries()
-        {
-            try
-            {
-                DictionaryEntries.Clear();
+		private readonly IDictionaryDataProvider _dataProvider;
 
-                foreach (var entry in (await _dataProvider.DeserializeAll()).Select(e => new IlterisDictionaryEntryVm(e.Value)))
-                {
-                    DictionaryEntries.Add(entry);
-                }
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.Fail("something went wrong");
-            }
-        }
+		public async void LoadDictionaryEntries()
+		{
+			try
+			{
+				DictionaryEntries.Clear();
 
-
-        public void LoadNextChunk(int startingPoint)
-        {
-            int ending = startingPoint + _chunkSize;
-            if (int.IsNegative(ending))
-            {
-                ending = 0;
-            }
-
-            System.Diagnostics.Debug.Assert(ending > startingPoint, "shouldnt be possible");
-
-            List<IlterisDictionaryEntryVm> list = new(100);
-            for (int i = startingPoint; i < ending; i++)
-            {
-                if (i == DictionaryEntries.Count)
-                {
-                    break;
-                }
-                list.Add(DictionaryEntries[i]);
-            }
-            ShownEntries = list;
-        }
+				foreach (var entry in (await _dataProvider.DeserializeAll()).Select(e => new IlterisDictionaryEntryVm(e.Value)))
+				{
+					DictionaryEntries.Add(entry);
+				}
+			}
+			catch (Exception ex)
+			{
+				System.Diagnostics.Debug.Fail("something went wrong");
+			}
+		}
 
 
+		public void LoadNextChunk(int startingPoint)
+		{
+			int ending = startingPoint + _chunkSize;
+			if (int.IsNegative(ending))
+			{
+				ending = 0;
+			}
 
-        public IEnumerable<MeaningEntryVm> LoadMeaningEntries()
-        {
-            return DictionaryEntries.Select(e => new MeaningEntryVm(e.EntryID) { MeaningDescription = e.Meaning, Word = e.TurkishVariant });
-        }
+			System.Diagnostics.Debug.Assert(ending > startingPoint, "shouldnt be possible");
+
+			List<IlterisDictionaryEntryVm> list = new(100);
+			for (int i = startingPoint; i < ending; i++)
+			{
+				if (i == DictionaryEntries.Count)
+				{
+					break;
+				}
+				list.Add(DictionaryEntries[i]);
+			}
+			ShownEntries = list;
+		}
 
 
-        public IlterisDictionaryEntryVm? GetDictionaryEntry(Guid ID)
-        {
-            return DictionaryEntries.FirstOrDefault(e => Equals(e.EntryID, ID));
-        }
-    }
+
+		public IEnumerable<MeaningEntryVm> LoadMeaningEntries()
+		{
+			return DictionaryEntries.Select(e => new MeaningEntryVm(e.EntryID) { MeaningDescription = e.Meaning, Word = e.TurkishVariant });
+		}
+
+
+		public IlterisDictionaryEntryVm? GetDictionaryEntry(Guid ID)
+		{
+			return DictionaryEntries.FirstOrDefault(e => Equals(e.EntryID, ID));
+		}
+	}
 }
